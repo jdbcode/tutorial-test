@@ -79,7 +79,7 @@ col = col.map(function(img){
 });
 ```
 
-A join operation will be implemented that groups images by the DOY property just added. It expects two
+A join operation will be implemented that groups images by the 'doy' property just added. It expects two
 collections: a distinct DOY collection and the complete collection. The complete collection exists, the
 distinct collection needs to be defined. Do so by filtering the complete collection to a single year of
 data e.g. 2013. 
@@ -96,10 +96,10 @@ Complete the join by:
 
 ```js
 // Define a filter that identifies which images from the complete collection
-// match the DOY from the distinct DOY collection 
+// match the DOY from the distinct DOY collection. 
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
-// Define a join
+// Define a join.
 var join = ee.Join.saveAll('doy_matches');
 
 // Apply the join and convert the resulting FeatureCollection to an ImageCollection.
@@ -116,7 +116,7 @@ of its constituents. Map this oppertation over each distinct DOY image in the ne
 The result is a new collection, with one image per distinct DOY composite that represents its 20-year
 median NDVI per pixel. It took some work to get to this point, but using a central tendency statistic
 based on a population of data produces an annual time series animation that is free of missing data and
-outlier data points i.e. the animation is less noisy.   
+outliers i.e. the animation is less noisy.   
 
 ```js
 // Apply median reduction among matching DOY collections.
@@ -135,7 +135,7 @@ The `visualize` method can convert single-band images (like NDVI)
 into 3-band RGB pseudo-color images. Define visualization properties including a color palette and min
 and max values to stretch the palette between. Map the `visualize` method over each image using the defined
 visualization properties and clip the data to the mask defined in [Step 2](#2-define-clipping-and-region-boundary-geometries)
-to background pixels to null (black).
+to set background pixels to null (black).
 
 ```js
 // Define RGB visualization parameters.
@@ -158,7 +158,7 @@ var rgbVis = comp.map(function(img){
 ### 6. Create an animated GIF
 
 The final step is to define arguments for the `getVideoThumbURL` method which will create an animation from
-the collection of RGB visualization images created in the previous step. Relevant parameters include:
+the collection of RGB visualization images generated in the previous step. Relevant parameters include:
 
 - `region`: set to the region defined in above [Step 2](#2-define-clipping-and-region-boundary-geometries)
 - `dimensions`: set to 600 which defines the larger dimension of the resulting GIF as 600px (the smaller dimension is proportionally scaled)
@@ -179,6 +179,5 @@ print(rgbVis.getVideoThumbURL(gifParams));
 ```
 
 A URL will be printed to the console after running this block of code. Upon visiting the URL, Earth Engine servers
-will complete the work needed to produce the GIF on-the-fly. Once the task is complete the animation will appear in
+will complete the work needed to produce the GIF on-the-fly. Once the task is complete, the animation will appear in
 the browser. Use the right-click context menu to select options for downloading the GIF file to your location machine.
-
