@@ -99,7 +99,7 @@ Complete the join by:
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
 // Define a join
-var join = ee.Join.saveALL('doy_matches');
+var join = ee.Join.saveAll('doy_matches');
 
 // Apply the join and convert the resulting FeatureCollection to an ImageCollection.
 var joinCol = ee.ImageCollection(join.apply(dist, col, filter));
