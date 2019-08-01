@@ -34,7 +34,7 @@ The basic workflow is as follows:
 Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an `ee.ImageCollection`
 and select the NDVI band.
 
-```
+```js
 var col = ee.ImageCollection('MODIS/006/MOD13A2').select('NDVI');
 ```
 
@@ -48,7 +48,7 @@ describing a rectangular extent of the desired animation is defined. In your own
 these two geometries any number of ways. Note, however, that very large regional extents may exceed limitations
 of the function used to produce the animated GIF, in which case an error will be printed in the console.
 
-```
+```js
 // Define a mask to clip the NDVI data by.
 var mask = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
   .filter(ee.Filter.eq('wld_rgn', 'Africa'));
@@ -72,7 +72,7 @@ calendar date needs to be added to the metadata of each image so there is a comm
 by. Day-of-year (DOY) is a fine format and can be derived from the ubiquitous `system:time_start` property
 using the `getRelative` `ee.Date` method.
 
-```
+```js
 col = col.map(function(img){
   var doy = ee.Date(img.get('system:time_start')).getRelative('day', 'year');
   return img.set('doy', doy);
@@ -84,7 +84,7 @@ collections: a distinct DOY collection and the complete collection. The complete
 distinct collection needs to be defined. Do so by filtering the complete collection to a single year of
 data e.g. 2013. 
 
-```
+```js
 var dist = col.filterDate('2013-01-01', '2014-01-01');
 ```
 
@@ -94,7 +94,7 @@ Complete the join by:
 2. Defining a `saveAll` join that will produce a list of all matches in a property called 'doy_matches'
 3. Applying the join
 
-```
+```js
 // Define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection 
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
@@ -117,7 +117,7 @@ median NDVI per pixel. It took some work to get to this point, but using a centr
 based on a population of data produces an annual time series animation that is free of missing data and
 outlier data points i.e. the animation is less noisy.   
 
-```
+```js
 // Apply median reduction among matching DOY collections.
 var comp = joinCol.map(function(img) {
   var doyCol = ee.ImageCollection.fromImages(
@@ -136,7 +136,7 @@ and max values to stretch the palette between. Map the `visualize` method over e
 visualization properties and clip the data to the mask defined in [Step 2](#2_define_clipping_and_frame_boundary_geometries)
 to background pixels to null (black).
 
-```
+```js
 // Define RGB visualization parameters.
 var visParams = {
   min: 0.0,
@@ -164,7 +164,7 @@ the collection of RGB visualization images created in the previous step. Relevan
 - `crs`: set to 'EPSG:3857' to match the coordinate reference system of the Code Editor map
 - `framesPerSecond`: set to 10 (frames per second)
 
-```
+```js
 // Define GIF visualization parameters.
 var gifParams = {
   'region': region,
