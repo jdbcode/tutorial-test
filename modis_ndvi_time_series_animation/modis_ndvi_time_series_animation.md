@@ -70,7 +70,7 @@ year from 2000 to 2019. Generating these median composites is the crux of this t
 grouping inter-annual image data representing the same 16-day composite window into lists. To do this, a
 calendar date needs to be added to the metadata of each image so there is a common property to group (join)
 by. Day-of-year (DOY) is a fine format and can be derived from the ubiquitous `system:time_start` property
-using the `getRelative` `ee.Date` method.
+using the `getRelative` method.
 
 ```js
 col = col.map(function(img){
