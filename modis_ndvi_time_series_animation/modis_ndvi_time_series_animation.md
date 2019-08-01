@@ -134,7 +134,7 @@ Set visualization properties to control the appearance of the data in the animat
 The `visualize` method can convert single-band images (like NDVI)
 into 3-band RGB pseudo-color images. Define visualization properties including a color palette and min
 and max values to stretch the palette between. Map the `visualize` method over each image using the defined
-visualization properties and clip the data to the mask defined in [Step 2](#2_define_clipping_and_frame_boundary_geometries)
+visualization properties and clip the data to the mask defined in [Step 2](#2-define-clipping-and-region-boundary-geometries)
 to background pixels to null (black).
 
 ```js
@@ -160,7 +160,7 @@ var rgbVis = comp.map(function(img){
 The final step is to define arguments for the `getVideoThumbURL` method which will create an animation from
 the collection of RGB visualization images created in the previous step. Relevant parameters include:
 
-- `region`: set to the region defined in above [Step 2](#2_define_clipping_and_frame_boundary_geometries)
+- `region`: set to the region defined in above [Step 2](#2-define-clipping-and-region-boundary-geometries)
 - `dimensions`: set to 600 which defines the larger dimension of the resulting GIF as 600px (the smaller dimension is proportionally scaled)
 - `crs`: set to 'EPSG:3857' to match the coordinate reference system of the Code Editor map
 - `framesPerSecond`: set to 10 (frames per second)
