@@ -1,4 +1,4 @@
-[![Open In Editor](https://github.com/jdbcode/tutorial-test/blob/master/ee-editor-badge.png?raw=true)](https://earthengine.googleapis.com/api/thumb?thumbid=d2fdb9a6167d24136bde2cb685220e26&token=ecd4cf4d6d16629447fbd8ddca98c2c5)
+[![Open In Editor](https://github.com/jdbcode/tutorial-test/blob/master/ee-editor-badge.png?raw=true)](https://code.earthengine.google.com/ebd499ed1cdc9f95c754634ee6585aa3)
 
 # MODIS NDVI Times Series Animation
 
