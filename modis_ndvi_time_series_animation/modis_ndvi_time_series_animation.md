@@ -95,7 +95,8 @@ Complete the join by:
 3. Applying the join
 
 ```js
-// Define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection 
+// Define a filter that identifies which images from the complete collection
+// match the DOY from the distinct DOY collection 
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
 // Define a join
