@@ -110,25 +110,24 @@ Map.add(controlPanel);
 Map.add(chartPanel);
 ```
 
-### Dealing with geometries
+### Setup custom drawing tools
 
-1\.  Get the drawing tools widget object. It will be accessed repeatedly,
-define it as a variable for convenience in recalling later.
+1\. Get the drawing tools widget object; define it as a variable for
+convenience in recalling it later.
 
 ```js
 var drawingTools = Map.drawingTools();
 ```
 
-
 2\. Hide the default drawing tools so you can add your own. You can use the
-default drawing tools, but they provide more functionality than is needed in
-this example and simplicity is the goal.
+default drawing tools for interactive region reduction, but they provide more
+functionality than is needed when simplicity is the goal.
 
 ```js
 drawingTools.setShown(false);
 ```
 
-3\. Set up a while loop to clear all existing geometries that have been added
+3\. Setup a while loop to clear all existing geometries that have been added
 as imports from drawing tools (from previously running the script). The
 design of the app is to handle charting a time series for a single geometry,
 so remove any that exist.
@@ -139,7 +138,7 @@ while (nLayers > 0) {
   var layer = drawingTools.layers().get(0);
   drawingTools.layers().remove(layer);
   nLayers = drawingTools.layers().length();
-} 
+}
 ```
 
 4\. Initialize a dummy `GeometryLayer` with `null` geometry to act as a
@@ -147,23 +146,25 @@ placeholder for drawn geometries.
 
 ```js
 var dummyGeometry = ui.Map.GeometryLayer({
-  geometries: null, name: 'geometry', color: '23cba7'});
+  geometries: null, name: 'geometry', color: '23cba7'
+});
 
 drawingTools.layers().add(dummyGeometry);
 ```
 
-5\. Define a series of functions that fire when each of the geometry buttons
-is clicked: one for clearing the previous geometry from the `GeometryLayer`
-and one for each drawing mode: rectangle, polygon, and point.
+5\. Define a series of callback functions that fire when the geometry drawing
+mode buttons are clicked: one for clearing the previous geometry from the
+`GeometryLayer` and one for each drawing mode button
+(rectangle, polygon, and point).
 
-The `clearGeometry` function is necessary because if the previous geometry is
-not cleared, the `GeometryLayer` becomes a multipolygon as each new drawing
-is added to the list of geometries - the region reduction of NDVI is no
+The following `clearGeometry` function is necessary because if the previous
+geometry is not cleared, the `GeometryLayer` becomes a multipolygon as each new
+drawing is added to the list of geometries - the region reduction is no
 longer based on a single region. In some applications this may be desirable,
-but not in this simple example. Another reason is that the rectangle drawing
-event does not integrate well with the other drawing modes because it is
+but not in this simple example. Furthermore, the rectangle drawing
+mode does not integrate well with the other drawing modes because it is
 non-geodesic, so additional `GeometryLayer`s are added as imports to handle
-the change, further complicating the reduction of NDVI.
+the change, adding complexity to the region reduction.
 
 ```js
 function clearGeometry(){
@@ -197,7 +198,7 @@ function drawPoint(){
 }
 ```
 
-5\. Set the drawing tools widget to listen for geometry drawing and editing
+6\. Set the drawing tools widget to listen for geometry drawing and editing
 events and respond with a function to chart the NDVI time series for the
 newly drawn or edited region. The NDVI time series charting function has not
 be defined yet, but its name can be provided as `chartNdviTimeSeries`.
@@ -214,7 +215,7 @@ drawingTools.onDraw(ui.util.debounce(chartNdviTimeSeries, 500));
 drawingTools.onEdit(ui.util.debounce(chartNdviTimeSeries, 500));
 ```
 
-### Regional NDVI time series chart
+### Regional time series chart
 
 1\. Import the MODIS 16-day 1km global vegetation index dataset.
 
@@ -223,9 +224,11 @@ var modisVeg = ee.ImageCollection("MODIS/006/MOD13A2");
 ```
 
 2\. Define a function that gets called on geometry drawing and editing events
-to generate the NDVI time series chart. See the in-code comments for an brief
-explanation of each step. In short, the function initializes the chart panel
-on the first drawing, clears previously rendered charts if ......
+to generate an NDVI time series chart for the region. See the in-code comments
+for an explanation of each step. In summary, the function initializes the
+chart panel on the first drawing, clears previously rendered charts, get the
+drawn geometry, calculates reduction scale based on `Map` scale, and
+generates a chart in the chart panel.
 
 ```js
 function chartNdviTimeSeries() {
@@ -236,7 +239,7 @@ function chartNdviTimeSeries() {
     chartPanel.clear();
   }
 
-  // Get the geometry
+  // Get the geometry.
   var aoi = drawingTools.layers().get(0).getEeObject();
 
   // Set drawing mode back to null.
@@ -260,6 +263,9 @@ function chartNdviTimeSeries() {
     legend: {position: 'none'},
     hAxis: {title: 'Date'},
     vAxis: {title: 'NDVI (x1e4)'},
+    series: {
+      0: {lineColor: '23cba7'}
+    }
   });
   chartPanel.widgets().reset([chart]);
 }
@@ -273,6 +279,6 @@ geometry management.
 
 ![](app-animation.gif)
 
-Learn more about the drawing tools API from this
-[tutorial](https://developers.google.com/earth-engine/tutorials/community/drawing-tools)
-and [guide](https://developers.google.com/earth-engine/ui_widgets#ui.map.drawingtools).
+Learn more about the drawing tools API in the
+[Getting Started with Drawing Tools](https://developers.google.com/earth-engine/tutorials/community/drawing-tools)
+tutorial.
