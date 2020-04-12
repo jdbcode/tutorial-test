@@ -26,11 +26,11 @@ API](https://developers.google.com/earth-engine/ui_widgets#ui.map.drawingtools)
 with a custom interface to make a simple [Earth Engine
 App](https://developers.google.com/earth-engine/apps) that charts an NDVI
 time series for a user-drawn geometry. The app provides options for drawing a
-rectangle, polygon, or pin. It listens for when a user draws a geometry and
+rectangle, polygon, or point. It listens for when a user draws a geometry and
 displays a chart of mean NDVI for pixels intersecting the drawn geometry.
 
 ![](app-img.jpg)<br>
-_Figure 1. Depiction of the Earth Engine App resulting from this
+_The Earth Engine App resulting from this
 tutorial. Shown is an NDVI time series chart for the drawn polygon around
 Carmel Valley, California._
 
