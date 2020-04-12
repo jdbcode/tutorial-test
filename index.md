@@ -89,7 +89,8 @@ var controlPanel = ui.Panel({
 
 3\. Define a panel to hold the NDVI time series chart. Set the `shown` style
 parameter to `false` to initially hide the panel until the first NDVI time
-series chart is rendered.
+series chart is rendered (handled in the
+[Regional NDVI time series chart](#regional-ndvi-time-series-chart) section).
 
 ```js
 var chartPanel = ui.Panel({
@@ -102,13 +103,11 @@ var chartPanel = ui.Panel({
 });
 ```
 
-4\. Add the control panel to the `Map`. The chart
-panel will be added the first time that a geometry is drawn - see the second
-step of the [Regional NDVI time series
-chart](#regional-ndvi-time-series-chart) section.
+4\. Add the panels to the `Map`.
 
 ```js
 Map.add(controlPanel);
+Map.add(chartPanel);
 ```
 
 ### Dealing with geometries
