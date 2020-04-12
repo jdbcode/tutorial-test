@@ -64,23 +64,25 @@ a following step.
 ```js
 var controlPanel = ui.Panel({
   widgets: [
-    ui.Label('1. Select a drawing mode.'),
-    ui.Button({
+    ui.Label('1. Select a drawing mode.'), ui.Button({
       label: symbol.rectangle + ' Rectangle',
       onClick: drawRectangle,
-      style: {stretch: 'horizontal'}}),
+      style: {stretch: 'horizontal'}
+    }),
     ui.Button({
       label: symbol.polygon + ' Polygon',
       onClick: drawPolygon,
-      style: {stretch: 'horizontal'}}),
+      style: {stretch: 'horizontal'}
+    }),
     ui.Button({
       label: symbol.point + ' Point',
       onClick: drawPoint,
-      style: {stretch: 'horizontal'}}),
-    ui.Label('2. Draw a geometry.'),
-    ui.Label('3. Wait for chart to render.'),
-    ui.Label('4. Repeat 1-3 or edit/move\ngeometry for a new chart.',
-      {whiteSpace: 'pre'})
+      style: {stretch: 'horizontal'}
+    }),
+    ui.Label('2. Draw a geometry.'), ui.Label('3. Wait for chart to render.'),
+    ui.Label(
+        '4. Repeat 1-3 or edit/move\ngeometry for a new chart.',
+        {whiteSpace: 'pre'})
   ],
   style: {position: 'bottom-left'},
   layout: null,
@@ -94,12 +96,8 @@ series chart is rendered (handled in the
 
 ```js
 var chartPanel = ui.Panel({
-  style: {
-    height: '235px',
-    width: '600px',
-    position: 'bottom-right',
-    shown: false
-  }
+  style:
+      {height: '235px', width: '600px', position: 'bottom-right', shown: false}
 });
 ```
 
@@ -145,9 +143,8 @@ while (nLayers > 0) {
 placeholder for drawn geometries.
 
 ```js
-var dummyGeometry = ui.Map.GeometryLayer({
-  geometries: null, name: 'geometry', color: '23cba7'
-});
+var dummyGeometry =
+    ui.Map.GeometryLayer({geometries: null, name: 'geometry', color: '23cba7'});
 
 drawingTools.layers().add(dummyGeometry);
 ```
@@ -167,7 +164,7 @@ non-geodesic, so additional `GeometryLayer`s are added as imports to handle
 the change, adding complexity to the region reduction.
 
 ```js
-function clearGeometry(){
+function clearGeometry() {
   var layers = drawingTools.layers();
   layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
 }
@@ -179,19 +176,19 @@ drawings using the `clearGeometry` function and then initialize drawing for
 the particular mode.
 
 ```js
-function drawRectangle(){
+function drawRectangle() {
   clearGeometry();
   drawingTools.setShape('rectangle');
   drawingTools.draw();
 }
 
-function drawPolygon(){
+function drawPolygon() {
   clearGeometry();
   drawingTools.setShape('polygon');
   drawingTools.draw();
 }
 
-function drawPoint(){
+function drawPoint() {
   clearGeometry();
   drawingTools.setShape('point');
   drawingTools.draw();
@@ -220,7 +217,7 @@ drawingTools.onEdit(ui.util.debounce(chartNdviTimeSeries, 500));
 1\. Import the MODIS 16-day 1km global vegetation index dataset.
 
 ```js
-var modisVeg = ee.ImageCollection("MODIS/006/MOD13A2");
+var modisVeg = ee.ImageCollection('MODIS/006/MOD13A2');
 ```
 
 2\. Define a function that gets called on geometry drawing and editing events
@@ -233,10 +230,8 @@ generates a chart in the chart panel.
 ```js
 function chartNdviTimeSeries() {
   // Make the chart panel visible the first time.
-  if(!chartPanel.style().get('shown')){
+  if (!chartPanel.style().get('shown')) {
     chartPanel.style().set('shown', true);
-  } else { // Clear the chart panel.
-    chartPanel.clear();
   }
 
   // Get the geometry.
@@ -250,23 +245,22 @@ function chartNdviTimeSeries() {
   var scale = mapScale > 5000 ? mapScale * 2 : 5000;
 
   // Chart NDVI time series for the selected area of interest.
-  var chart = ui.Chart.image.seriesByRegion({
-    imageCollection: modisVeg,
-    regions: aoi,
-    reducer: ee.Reducer.mean(),
-    band: 'NDVI',
-    scale: scale,
-    xProperty: 'system:time_start'
-  })
-  .setOptions({
-    titlePostion: 'none',
-    legend: {position: 'none'},
-    hAxis: {title: 'Date'},
-    vAxis: {title: 'NDVI (x1e4)'},
-    series: {
-      0: {lineColor: '23cba7'}
-    }
-  });
+  var chart = ui.Chart.image
+                  .seriesByRegion({
+                    imageCollection: modisVeg,
+                    regions: aoi,
+                    reducer: ee.Reducer.mean(),
+                    band: 'NDVI',
+                    scale: scale,
+                    xProperty: 'system:time_start'
+                  })
+                  .setOptions({
+                    titlePostion: 'none',
+                    legend: {position: 'none'},
+                    hAxis: {title: 'Date'},
+                    vAxis: {title: 'NDVI (x1e4)'},
+                    series: {0: {color: '23cba7'}}
+                  });
   chartPanel.widgets().reset([chart]);
 }
 ```
