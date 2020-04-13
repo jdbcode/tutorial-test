@@ -34,7 +34,7 @@ _The Earth Engine App resulting from this
 tutorial. Shown is an NDVI time series chart for the drawn polygon around
 Carmel Valley, California._
 
-## Setup the user interface
+## User interface
 
 This section defines control and chart panels to add to the Map. The control
 panel will contain instructions and drawing tool buttons, and the chart panel
@@ -108,7 +108,7 @@ Map.add(controlPanel);
 Map.add(chartPanel);
 ```
 
-### Setup custom drawing tools
+### Custom drawing tools
 
 1\. Get the drawing tools widget object; define it as a variable for
 convenience in recalling it later.
