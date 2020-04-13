@@ -89,10 +89,10 @@ var controlPanel = ui.Panel({
 });
 ```
 
-3\. Define a panel to hold the NDVI time series chart. Set the `shown` style
-parameter to `false` to initially hide the panel until the first NDVI time
-series chart is rendered (handled in the
-[Regional NDVI time series chart](#regional-ndvi-time-series-chart) section).
+3\. Define a panel to hold the time series chart. Set the `shown` style
+parameter to `false` to initially hide the panel until the first chart is
+rendered (handled in the
+[Regional time series chart](#Regional-time-series-chart) section).
 
 ```js
 var chartPanel = ui.Panel({
@@ -154,14 +154,7 @@ mode buttons are clicked: one for clearing the previous geometry from the
 `GeometryLayer` and one for each drawing mode button
 (rectangle, polygon, and point).
 
-The following `clearGeometry` function is necessary because if the previous
-geometry is not cleared, the `GeometryLayer` becomes a multipolygon as each new
-drawing is added to the list of geometries - the region reduction is no
-longer based on a single region. In some applications this may be desirable,
-but not in this simple example. Furthermore, the rectangle drawing
-mode does not integrate well with the other drawing modes because it is
-non-geodesic, so additional `GeometryLayer`s are added as imports to handle
-the change, adding complexity to the region reduction.
+Define the geometry clearing function.
 
 ```js
 function clearGeometry() {
@@ -197,15 +190,12 @@ function drawPoint() {
 
 6\. Set the drawing tools widget to listen for geometry drawing and editing
 events and respond with a function to chart the NDVI time series for the
-newly drawn or edited region. The NDVI time series charting function has not
+newly drawn or edited region. The charting function has not
 be defined yet, but its name can be provided as `chartNdviTimeSeries`.
 
 Note that `ui.util.debounce` wraps the `chartNdviTimeSeries` function to
 reduce the frequency of it being invoked while drawing and editing a
-geometry. For instance, while dragging a vertex to edit a geometry, the
-callback function would fire continually, if debounce was not set, which can
-be a burden on compute resources for an expensive function. Here, the delay
-is set to 500 milliseconds or 0.5 seconds.
+geometry. Here, the delay is set to 500 milliseconds or 0.5 seconds.
 
 ```js
 drawingTools.onDraw(ui.util.debounce(chartNdviTimeSeries, 500));
@@ -223,8 +213,8 @@ var modisVeg = ee.ImageCollection('MODIS/006/MOD13A2');
 2\. Define a function that gets called on geometry drawing and editing events
 to generate an NDVI time series chart for the region. See the in-code comments
 for an explanation of each step. In summary, the function initializes the
-chart panel on the first drawing, clears previously rendered charts, get the
-drawn geometry, calculates reduction scale based on `Map` scale, and
+chart panel on the first drawing event, clears previously rendered charts, get
+the drawn geometry, calculates reduction scale based on the `Map` scale, and
 generates a chart in the chart panel.
 
 ```js
