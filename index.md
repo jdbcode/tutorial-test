@@ -191,7 +191,7 @@ function drawPoint() {
 6\. Set the drawing tools widget to listen for geometry drawing and editing
 events and respond with a function to chart the NDVI time series for the
 newly drawn or edited region. The charting function has not
-be defined yet, but its name can be provided as `chartNdviTimeSeries`.
+been defined yet, but its name can be provided as `chartNdviTimeSeries`.
 
 Note that `ui.util.debounce` wraps the `chartNdviTimeSeries` function to
 reduce the frequency of it being invoked while drawing and editing a
@@ -211,11 +211,11 @@ var modisVeg = ee.ImageCollection('MODIS/006/MOD13A2');
 ```
 
 2\. Define a function that gets called on geometry drawing and editing events
-to generate an NDVI time series chart for the region. See the in-code comments
-for an explanation of each step. In summary, the function initializes the
-chart panel on the first drawing event, clears previously rendered charts, get
-the drawn geometry, calculates reduction scale based on the `Map` scale, and
-generates a chart in the chart panel.
+to generate an NDVI time series chart for the region. See code comments
+for an explanation of each step. In summary, the function shows the
+chart panel on the first drawing event, clears previously rendered charts, gets
+the drawn geometry, calculates the region reduction scale based on the `Map`
+scale, and renders a chart in the chart panel.
 
 ```js
 function chartNdviTimeSeries() {
