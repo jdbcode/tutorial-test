@@ -47,45 +47,45 @@ text. The symbols will be concatenated with text in the following step.
 
 ```js
 var symbol = {
-rectangle: '⬛',
-polygon: '🔺',
-point: '📍',
+  rectangle: '⬛',
+  polygon: '🔺',
+  point: '📍',
 };
 ```
 
 2\. Define a `ui.Panel` to hold app instructions and the geometry drawing
 buttons. Use a `ui.Label` for each instruction line and a `ui.Button` for
 each of the three geometry drawing options. Button labels are the
-concatenation of a symbol (defined in the previous step) and text. Note that
+concatenation of the symbols defined in the previous step and text. Note that
 button elements have an `onClick` parameter that accepts a function that
 fires when the button is clicked; the provided named functions are defined in
 a following step.
 
 ```js
 var controlPanel = ui.Panel({
-widgets: [
-ui.Label('1. Select a drawing mode.'), ui.Button({
-label: symbol.rectangle + ' Rectangle',
-onClick: drawRectangle,
-style: {stretch: 'horizontal'}
-}),
-ui.Button({
-label: symbol.polygon + ' Polygon',
-onClick: drawPolygon,
-style: {stretch: 'horizontal'}
-}),
-ui.Button({
-label: symbol.point + ' Point',
-onClick: drawPoint,
-style: {stretch: 'horizontal'}
-}),
-ui.Label('2. Draw a geometry.'), ui.Label('3. Wait for chart to render.'),
-ui.Label(
-'4. Repeat 1-3 or edit/move\ngeometry for a new chart.',
-{whiteSpace: 'pre'})
-],
-style: {position: 'bottom-left'},
-layout: null,
+  widgets: [
+    ui.Label('1. Select a drawing mode.'), ui.Button({
+      label: symbol.rectangle + ' Rectangle',
+      onClick: drawRectangle,
+      style: {stretch: 'horizontal'}
+    }),
+    ui.Button({
+      label: symbol.polygon + ' Polygon',
+      onClick: drawPolygon,
+      style: {stretch: 'horizontal'}
+    }),
+    ui.Button({
+      label: symbol.point + ' Point',
+      onClick: drawPoint,
+      style: {stretch: 'horizontal'}
+    }),
+    ui.Label('2. Draw a geometry.'), ui.Label('3. Wait for chart to render.'),
+    ui.Label(
+        '4. Repeat 1-3 or edit/move\ngeometry for a new chart.',
+        {whiteSpace: 'pre'})
+  ],
+  style: {position: 'bottom-left'},
+  layout: null,
 });
 ```
 
@@ -96,8 +96,8 @@ series chart is rendered (handled in the
 
 ```js
 var chartPanel = ui.Panel({
-style:
-{height: '235px', width: '600px', position: 'bottom-right', shown: false}
+  style:
+      {height: '235px', width: '600px', position: 'bottom-right', shown: false}
 });
 ```
 
@@ -133,9 +133,9 @@ so remove any that exist.
 ```js
 var nLayers = drawingTools.layers().length();
 while (nLayers > 0) {
-var layer = drawingTools.layers().get(0);
-drawingTools.layers().remove(layer);
-nLayers = drawingTools.layers().length();
+  var layer = drawingTools.layers().get(0);
+  drawingTools.layers().remove(layer);
+  nLayers = drawingTools.layers().length();
 }
 ```
 
@@ -144,7 +144,7 @@ placeholder for drawn geometries.
 
 ```js
 var dummyGeometry =
-ui.Map.GeometryLayer({geometries: null, name: 'geometry', color: '23cba7'});
+    ui.Map.GeometryLayer({geometries: null, name: 'geometry', color: '23cba7'});
 
 drawingTools.layers().add(dummyGeometry);
 ```
@@ -165,8 +165,8 @@ the change, adding complexity to the region reduction.
 
 ```js
 function clearGeometry() {
-var layers = drawingTools.layers();
-layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
+  var layers = drawingTools.layers();
+  layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
 }
 ```
 
@@ -177,21 +177,21 @@ the particular mode.
 
 ```js
 function drawRectangle() {
-clearGeometry();
-drawingTools.setShape('rectangle');
-drawingTools.draw();
+  clearGeometry();
+  drawingTools.setShape('rectangle');
+  drawingTools.draw();
 }
 
 function drawPolygon() {
-clearGeometry();
-drawingTools.setShape('polygon');
-drawingTools.draw();
+  clearGeometry();
+  drawingTools.setShape('polygon');
+  drawingTools.draw();
 }
 
 function drawPoint() {
-clearGeometry();
-drawingTools.setShape('point');
-drawingTools.draw();
+  clearGeometry();
+  drawingTools.setShape('point');
+  drawingTools.draw();
 }
 ```
 
@@ -229,39 +229,39 @@ generates a chart in the chart panel.
 
 ```js
 function chartNdviTimeSeries() {
-// Make the chart panel visible the first time.
-if (!chartPanel.style().get('shown')) {
-chartPanel.style().set('shown', true);
-}
+  // Make the chart panel visible the first time.
+  if (!chartPanel.style().get('shown')) {
+    chartPanel.style().set('shown', true);
+  }
 
-// Get the geometry.
-var aoi = drawingTools.layers().get(0).getEeObject();
+  // Get the geometry.
+  var aoi = drawingTools.layers().get(0).getEeObject();
 
-// Set drawing mode back to null.
-drawingTools.setShape(null);
+  // Set drawing mode back to null.
+  drawingTools.setShape(null);
 
-// Adjust scale depending on map scale to avoid memory limitations/timeouts.
-var mapScale = Map.getScale();
-var scale = mapScale > 5000 ? mapScale * 2 : 5000;
+  // Adjust scale depending on map scale to avoid memory limitations/timeouts.
+  var mapScale = Map.getScale();
+  var scale = mapScale > 5000 ? mapScale * 2 : 5000;
 
-// Chart NDVI time series for the selected area of interest.
-var chart = ui.Chart.image
-.seriesByRegion({
-imageCollection: modisVeg,
-regions: aoi,
-reducer: ee.Reducer.mean(),
-band: 'NDVI',
-scale: scale,
-xProperty: 'system:time_start'
-})
-.setOptions({
-titlePostion: 'none',
-legend: {position: 'none'},
-hAxis: {title: 'Date'},
-vAxis: {title: 'NDVI (x1e4)'},
-series: {0: {color: '23cba7'}}
-});
-chartPanel.widgets().reset([chart]);
+  // Chart NDVI time series for the selected area of interest.
+  var chart = ui.Chart.image
+                  .seriesByRegion({
+                    imageCollection: modisVeg,
+                    regions: aoi,
+                    reducer: ee.Reducer.mean(),
+                    band: 'NDVI',
+                    scale: scale,
+                    xProperty: 'system:time_start'
+                  })
+                  .setOptions({
+                    titlePostion: 'none',
+                    legend: {position: 'none'},
+                    hAxis: {title: 'Date'},
+                    vAxis: {title: 'NDVI (x1e4)'},
+                    series: {0: {color: '23cba7'}}
+                  });
+  chartPanel.widgets().reset([chart]);
 }
 ```
 
