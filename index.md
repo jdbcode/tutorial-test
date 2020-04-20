@@ -1,8 +1,8 @@
 ---
-title:  Interactive Region Reduction App
+title: Interactive Region Reduction App
 description: An Earth Engine App example that implements custom drawing tools to simplify interactive regional time series charting.
 author: jdbcode
-tags: earth-engine-apps, apps, region-reduction, drawing-tools
+tags: earth-engine-apps, apps, region-reduction, drawing-tools, time-series
 date_published: 2020-04-15
 ---
 <!--
@@ -29,7 +29,7 @@ time series for a user-drawn geometry. The app provides options for drawing a
 rectangle, polygon, or point. It listens for when a user draws a geometry and
 displays a chart of mean NDVI for pixels intersecting the drawn geometry.
 
-![](app-img.jpg)\
+![](app-img.jpg)
 _The Earth Engine App resulting from this
 tutorial. Shown is an NDVI time series chart for the drawn polygon around
 Carmel Valley, California._
@@ -64,7 +64,8 @@ a following step.
 ```js
 var controlPanel = ui.Panel({
   widgets: [
-    ui.Label('1. Select a drawing mode.'), ui.Button({
+    ui.Label('1. Select a drawing mode.'),
+    ui.Button({
       label: symbol.rectangle + ' Rectangle',
       onClick: drawRectangle,
       style: {stretch: 'horizontal'}
@@ -79,7 +80,8 @@ var controlPanel = ui.Panel({
       onClick: drawPoint,
       style: {stretch: 'horizontal'}
     }),
-    ui.Label('2. Draw a geometry.'), ui.Label('3. Wait for chart to render.'),
+    ui.Label('2. Draw a geometry.'),
+    ui.Label('3. Wait for chart to render.'),
     ui.Label(
         '4. Repeat 1-3 or edit/move\ngeometry for a new chart.',
         {whiteSpace: 'pre'})
@@ -131,11 +133,9 @@ design of the app is to handle charting a time series for a single geometry,
 so remove any that exist.
 
 ```js
-var nLayers = drawingTools.layers().length();
-while (nLayers > 0) {
+while (drawingTools.layers().length() > 0) {
   var layer = drawingTools.layers().get(0);
   drawingTools.layers().remove(layer);
-  nLayers = drawingTools.layers().length();
 }
 ```
 
@@ -219,18 +219,18 @@ scale, and renders a chart in the chart panel.
 
 ```js
 function chartNdviTimeSeries() {
-  // Make the chart panel visible the first time.
+  // Make the chart panel visible the first time a geometry is drawn.
   if (!chartPanel.style().get('shown')) {
     chartPanel.style().set('shown', true);
   }
 
-  // Get the geometry.
+  // Get the drawn geometry; it will define the reduction region.
   var aoi = drawingTools.layers().get(0).getEeObject();
 
-  // Set drawing mode back to null.
+  // Set the drawing mode back to null; turns drawing off.
   drawingTools.setShape(null);
 
-  // Adjust scale depending on map scale to avoid memory limitations/timeouts.
+  // Reduction scale is based on map scale to avoid memory/timeout errors.
   var mapScale = Map.getScale();
   var scale = mapScale > 5000 ? mapScale * 2 : 5000;
 
@@ -251,6 +251,8 @@ function chartNdviTimeSeries() {
                     vAxis: {title: 'NDVI (x1e4)'},
                     series: {0: {color: '23cba7'}}
                   });
+
+  // Replace the existing chart in the chart panel with the new chart.
   chartPanel.widgets().reset([chart]);
 }
 ```
