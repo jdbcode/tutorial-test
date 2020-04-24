@@ -37,10 +37,10 @@ Carmel Valley, California._
 ## Functionality
 
 The app has two main functions: 1) allow a user to draw a geometry
-and 2) render a region reduction time series chart for the drawn geometry.
+and; 2) render a region reduction time series chart for the drawn geometry.
 Clicking a "draw" button will allow a user to draw a geometry, and once the
 drawing is complete, the chart will render. These two events (button click to
-draw and drawing complete) need associated functions to complete the
+draw and drawing finished) need associated functions to complete the
 event-callback cycle.
 
 ### Custom drawing tools
@@ -198,9 +198,7 @@ function chartNdviTimeSeries() {
 ```
 
 4\. Set the drawing tools widget to listen for geometry drawing and editing
-events and respond with a function to chart the NDVI time series for the
-newly drawn or edited region. The charting function has not
-been defined yet, but its name can be provided as `chartNdviTimeSeries`.
+events and respond with the `chartNdviTimeSeries` function.
 
 Note that `ui.util.debounce` wraps the `chartNdviTimeSeries` function to
 reduce the frequency of it being invoked while drawing and editing a
@@ -214,8 +212,8 @@ drawingTools.onEdit(ui.util.debounce(chartNdviTimeSeries, 500));
 
 ## User interface
 
-This section defines the drawing control. The control panel will contain
-instructions and drawing tool buttons.
+This section defines the drawing control, which contains instructions and
+drawing tool buttons.
 
 1\. Define a dictionary of symbols to augment the text label for each of the
 geometry buttons defined in the following step. The symbols are kept separate
@@ -233,10 +231,9 @@ var symbol = {
 2\. Define a `ui.Panel` to hold app instructions and the geometry drawing
 buttons. Use a `ui.Label` for each instruction line and a `ui.Button` for
 each of the three geometry drawing options. Button labels are the
-concatenation of the symbols defined in the previous step and text. Note that
-button elements have an `onClick` parameter that accepts a function that
-fires when the button is clicked; the provided named functions are defined in
-a following step.
+concatenation of the symbols defined in the previous step and text. Set the
+`onClick` parameter to each respective drawing mode callback function defined
+above.
 
 ```js
 var controlPanel = ui.Panel({
