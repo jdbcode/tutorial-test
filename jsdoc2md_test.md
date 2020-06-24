@@ -1,60 +1,60 @@
 ## Functions
 
 <dl>
-<dt><a href="#filterMssQuality">filterMssQuality([rmseModel], [rmseVerify], [cloudCover], [doyRange])</a> ΓçÆ <code>ee.Filter</code></dt>
+<dt><a href="#filterMssQuality">filterMssQuality([rmseModel], [rmseVerify], [cloudCover], [doyRange])</a> ⇒ <code>ee.Filter</code></dt>
 <dd><p>Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.</p>
 </dd>
-<dt><a href="#getMssWrs2Col">getMssWrs2Col(aoi, qualityFilter)</a> ΓçÆ <code>ee.ImageCollection</code></dt>
+<dt><a href="#getMssWrs2Col">getMssWrs2Col(aoi, qualityFilter)</a> ⇒ <code>ee.ImageCollection</code></dt>
 <dd><p>Returns a filtered MSS WRS-2 image collection. Includes MSS 4 and 5 T1 and
     T2 images.</p>
 </dd>
-<dt><a href="#getMssWrs1Col">getMssWrs1Col(aoi, qualityFilter)</a> ΓçÆ <code>ee.ImageCollection</code></dt>
+<dt><a href="#getMssWrs1Col">getMssWrs1Col(aoi, qualityFilter)</a> ⇒ <code>ee.ImageCollection</code></dt>
 <dd><p>Returns a filtered MSS WRS-1 image collection. Includes MSS 1, 2, and 3 T1 and
     T2 images.</p>
 </dd>
-<dt><a href="#getTmWrs2Col">getTmWrs2Col(aoi)</a> ΓçÆ <code>ee.ImageCollection</code></dt>
+<dt><a href="#getTmWrs2Col">getTmWrs2Col(aoi)</a> ⇒ <code>ee.ImageCollection</code></dt>
 <dd><p>Returns a filtered TM WRS-2 T1 surface reflectance image collection.</p>
 </dd>
-<dt><a href="#addTmToMssJoinId">addTmToMssJoinId(img)</a> ΓçÆ <code>ee.ImageCollection</code></dt>
+<dt><a href="#addTmToMssJoinId">addTmToMssJoinId(img)</a> ⇒ <code>ee.ImageCollection</code></dt>
 <dd><p>Add unique path, row, orbit ID as image property for joining TM and MSS collections.</p>
 </dd>
-<dt><a href="#coincidentTmMssCol">coincidentTmMssCol(tmWrs2Col, mssWrs2Col)</a> ΓçÆ <code>ee.ImageCollection</code></dt>
+<dt><a href="#coincidentTmMssCol">coincidentTmMssCol(tmWrs2Col, mssWrs2Col)</a> ⇒ <code>ee.ImageCollection</code></dt>
 <dd><p>Add unique path, row, orbit ID as image property for joining TM and MSS collections.</p>
 </dd>
-<dt><a href="#getMult">getMult(tmWrs2Col)</a> ΓçÆ <code>ee.Dictionary</code></dt>
+<dt><a href="#getMult">getMult(tmWrs2Col)</a> ⇒ <code>ee.Dictionary</code></dt>
 <dd><p>A function to retrieve the per-band gain and bias properties from MSS image
     data to transform DN to TOA reflectance.</p>
 </dd>
-<dt><a href="#calcToaRefl">calcToaRefl(img)</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#calcToaRefl">calcToaRefl(img)</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>A function to transform MSS DN values to TOA reflectance using the per-band
     gain and bias properties from image metadata.</p>
 </dd>
-<dt><a href="#getFootPrint">getFootPrint(img)</a> ΓçÆ <code>ee.Geometry.Polygon</code></dt>
+<dt><a href="#getFootPrint">getFootPrint(img)</a> ⇒ <code>ee.Geometry.Polygon</code></dt>
 <dd><p>Returns the footprint of an image as a ee.Geometry.Polygon.</p>
 </dd>
-<dt><a href="#filterBounds">filterBounds(aoi)</a> ΓçÆ <code>ee.Filter</code></dt>
+<dt><a href="#filterBounds">filterBounds(aoi)</a> ⇒ <code>ee.Filter</code></dt>
 <dd><p>Generates an ee.Filter for filtering MSS and TM image collection by
     intersection with a given geometry.</p>
 </dd>
-<dt><a href="#tmCfmask">tmCfmask(img)</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#tmCfmask">tmCfmask(img)</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Returns a cloud and cloud shadow mask from CFmask.</p>
 </dd>
-<dt><a href="#exampleMssImg">exampleMssImg()</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#exampleMssImg">exampleMssImg()</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Returns an example MSS image.</p>
 </dd>
-<dt><a href="#exampleTmImg">exampleTmImg()</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#exampleTmImg">exampleTmImg()</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Returns an example Tm image.</p>
 </dd>
-<dt><a href="#cloudLayer">cloudLayer(A)</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#cloudLayer">cloudLayer(A)</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.</p>
 </dd>
-<dt><a href="#waterLayer">waterLayer(A)</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#waterLayer">waterLayer(A)</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.</p>
 </dd>
-<dt><a href="#getDem">getDem(A)</a> ΓçÆ <code>ee.Image</code></dt>
+<dt><a href="#getDem">getDem(A)</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.</p>
 </dd>
@@ -80,7 +80,7 @@
 
 <a name="filterMssQuality"></a>
 
-## filterMssQuality([rmseModel], [rmseVerify], [cloudCover], [doyRange]) ΓçÆ <code>ee.Filter</code>
+## filterMssQuality([rmseModel], [rmseVerify], [cloudCover], [doyRange]) ⇒ <code>ee.Filter</code>
 Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.
 
@@ -97,7 +97,7 @@ Generates an ee.Filter for filtering an MSS image collection by image
 
 <a name="getMssWrs2Col"></a>
 
-## getMssWrs2Col(aoi, qualityFilter) ΓçÆ <code>ee.ImageCollection</code>
+## getMssWrs2Col(aoi, qualityFilter) ⇒ <code>ee.ImageCollection</code>
 Returns a filtered MSS WRS-2 image collection. Includes MSS 4 and 5 T1 and
     T2 images.
 
@@ -112,7 +112,7 @@ Returns a filtered MSS WRS-2 image collection. Includes MSS 4 and 5 T1 and
 
 <a name="getMssWrs1Col"></a>
 
-## getMssWrs1Col(aoi, qualityFilter) ΓçÆ <code>ee.ImageCollection</code>
+## getMssWrs1Col(aoi, qualityFilter) ⇒ <code>ee.ImageCollection</code>
 Returns a filtered MSS WRS-1 image collection. Includes MSS 1, 2, and 3 T1 and
     T2 images.
 
@@ -127,7 +127,7 @@ Returns a filtered MSS WRS-1 image collection. Includes MSS 1, 2, and 3 T1 and
 
 <a name="getTmWrs2Col"></a>
 
-## getTmWrs2Col(aoi) ΓçÆ <code>ee.ImageCollection</code>
+## getTmWrs2Col(aoi) ⇒ <code>ee.ImageCollection</code>
 Returns a filtered TM WRS-2 T1 surface reflectance image collection.
 
 **Kind**: global function  
@@ -140,7 +140,7 @@ Returns a filtered TM WRS-2 T1 surface reflectance image collection.
 
 <a name="addTmToMssJoinId"></a>
 
-## addTmToMssJoinId(img) ΓçÆ <code>ee.ImageCollection</code>
+## addTmToMssJoinId(img) ⇒ <code>ee.ImageCollection</code>
 Add unique path, row, orbit ID as image property for joining TM and MSS collections.
 
 **Kind**: global function  
@@ -153,7 +153,7 @@ Add unique path, row, orbit ID as image property for joining TM and MSS collecti
 
 <a name="coincidentTmMssCol"></a>
 
-## coincidentTmMssCol(tmWrs2Col, mssWrs2Col) ΓçÆ <code>ee.ImageCollection</code>
+## coincidentTmMssCol(tmWrs2Col, mssWrs2Col) ⇒ <code>ee.ImageCollection</code>
 Add unique path, row, orbit ID as image property for joining TM and MSS collections.
 
 **Kind**: global function  
@@ -166,7 +166,7 @@ Add unique path, row, orbit ID as image property for joining TM and MSS collecti
 
 <a name="getMult"></a>
 
-## getMult(tmWrs2Col) ΓçÆ <code>ee.Dictionary</code>
+## getMult(tmWrs2Col) ⇒ <code>ee.Dictionary</code>
 A function to retrieve the per-band gain and bias properties from MSS image
     data to transform DN to TOA reflectance.
 
@@ -180,7 +180,7 @@ A function to retrieve the per-band gain and bias properties from MSS image
 
 <a name="calcToaRefl"></a>
 
-## calcToaRefl(img) ΓçÆ <code>ee.Image</code>
+## calcToaRefl(img) ⇒ <code>ee.Image</code>
 A function to transform MSS DN values to TOA reflectance using the per-band
     gain and bias properties from image metadata.
 
@@ -193,7 +193,7 @@ A function to transform MSS DN values to TOA reflectance using the per-band
 
 <a name="getFootPrint"></a>
 
-## getFootPrint(img) ΓçÆ <code>ee.Geometry.Polygon</code>
+## getFootPrint(img) ⇒ <code>ee.Geometry.Polygon</code>
 Returns the footprint of an image as a ee.Geometry.Polygon.
 
 **Kind**: global function  
@@ -206,7 +206,7 @@ Returns the footprint of an image as a ee.Geometry.Polygon.
 
 <a name="filterBounds"></a>
 
-## filterBounds(aoi) ΓçÆ <code>ee.Filter</code>
+## filterBounds(aoi) ⇒ <code>ee.Filter</code>
 Generates an ee.Filter for filtering MSS and TM image collection by
     intersection with a given geometry.
 
@@ -220,7 +220,7 @@ Generates an ee.Filter for filtering MSS and TM image collection by
 
 <a name="tmCfmask"></a>
 
-## tmCfmask(img) ΓçÆ <code>ee.Image</code>
+## tmCfmask(img) ⇒ <code>ee.Image</code>
 Returns a cloud and cloud shadow mask from CFmask.
 
 **Kind**: global function  
@@ -232,21 +232,21 @@ Returns a cloud and cloud shadow mask from CFmask.
 
 <a name="exampleMssImg"></a>
 
-## exampleMssImg() ΓçÆ <code>ee.Image</code>
+## exampleMssImg() ⇒ <code>ee.Image</code>
 Returns an example MSS image.
 
 **Kind**: global function  
 **Returns**: <code>ee.Image</code> - Example MSS image.  
 <a name="exampleTmImg"></a>
 
-## exampleTmImg() ΓçÆ <code>ee.Image</code>
+## exampleTmImg() ⇒ <code>ee.Image</code>
 Returns an example Tm image.
 
 **Kind**: global function  
 **Returns**: <code>ee.Image</code> - Example TM image.  
 <a name="cloudLayer"></a>
 
-## cloudLayer(A) ΓçÆ <code>ee.Image</code>
+## cloudLayer(A) ⇒ <code>ee.Image</code>
 Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.
 
@@ -267,7 +267,7 @@ Map.addLayer(water, {min: 0, max: 1}, 'Water mask');
 ```
 <a name="waterLayer"></a>
 
-## waterLayer(A) ΓçÆ <code>ee.Image</code>
+## waterLayer(A) ⇒ <code>ee.Image</code>
 Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.
 
@@ -288,7 +288,7 @@ Map.addLayer(water, {min: 0, max: 1}, 'Water mask');
 ```
 <a name="getDem"></a>
 
-## getDem(A) ΓçÆ <code>ee.Image</code>
+## getDem(A) ⇒ <code>ee.Image</code>
 Generates an ee.Filter for filtering an MSS image collection by image
     properties related to quality.
 
