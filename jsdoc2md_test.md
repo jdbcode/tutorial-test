@@ -50,37 +50,29 @@ Images are returned with consistent band names
 ['green', 'red', 'red_edge', 'nir'], and an added property that designates WRS
 grid ['WRS-1', 'WRS-2']; all original bands and metadata are included.  
 
-Get MSS collection with [default quality filters]()
+#### Get MSS collection with [default quality filters]()
 
 ```js
 var mssDnCol = msslib.getCol({aoi: geometry})
 ```
 
-Get MSS collection; filter by intersection with a geometry.
+#### Get MSS collection; filter by intersection with a geometry.
 
 ```js
 var geometry = ee.Geometry.Point([-122.239, 44.018]);
 var mssDnCol = msslib.getCol({aoi: geometry})
 ```
 
-Get MSS collection; filter by quality.
+#### Get MSS collection; filter by quality.
 
 ```js
 var geometry = ee.Geometry.Point([-122.239, 44.018]);
 var mssDnCol = msslib.getCol({aoi: geometry})
 ```
 
-### Transform DN values to TOA reflectance
+### Transform DN values to radiance
 
-Transform a collection.
-
-```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnCol = msslib.getCol({aoi: geometry});
-var mssToaCol = mssDnCol.map(msslib.calcToa);
-```
-
-Transform a single image.
+#### Transform a single image.
 
 ```js
 var geometry = ee.Geometry.Point([-122.239, 44.018]);
@@ -88,9 +80,35 @@ var mssDnImg = msslib.getCol({aoi: geometry}).first();
 var mssToaImage = msslib.calcToa(mssDnImg);
 ```
 
+#### Transform a collection.
+
+```js
+var geometry = ee.Geometry.Point([-122.239, 44.018]);
+var mssDnCol = msslib.getCol({aoi: geometry});
+var mssToaCol = mssDnCol.map(msslib.calcToa);
+```
+
+### Transform DN values to TOA reflectance
+
+#### Transform a single image.
+
+```js
+var geometry = ee.Geometry.Point([-122.239, 44.018]);
+var mssDnImg = msslib.getCol({aoi: geometry}).first();
+var mssToaImage = msslib.calcToa(mssDnImg);
+```
+
+#### Transform a collection.
+
+```js
+var geometry = ee.Geometry.Point([-122.239, 44.018]);
+var mssDnCol = msslib.getCol({aoi: geometry});
+var mssToaCol = mssDnCol.map(msslib.calcToa);
+```
+
 ### Collection inspection
 
-View image thumbnails.
+#### View image thumbnails.
 
 ```js
 var geometry = ee.Geometry.Point([-122.239, 44.018]);
