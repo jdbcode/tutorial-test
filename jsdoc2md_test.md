@@ -50,7 +50,7 @@ Images are returned with consistent band names
 ['green', 'red', 'red_edge', 'nir'], and an added property that designates WRS
 grid ['WRS-1', 'WRS-2']; all original bands and metadata are included.  
 
-#### Get MSS collection with [default quality filters]()
+- **Get MSS collection; filter by intersection with a geometry**.
 
 ```js
 var mssDnCol = msslib.getCol({aoi: geometry})
