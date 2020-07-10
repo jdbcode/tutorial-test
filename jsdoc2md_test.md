@@ -61,8 +61,8 @@ MSScvm].(<a href="https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_autom
 </dd>
 <dt><a href="#applyMsscvm">applyMsscvm(img)</a> ⇒ <code>ee.Image</code></dt>
 <dd><p>Applies the MSScvm mask to the input image, i.e., pixels identified as cloud
-or cloud shadow are masked out. [About
-MSScvm].(<a href="https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_automated%20cloud_and_cloud_shadow_identification_in_landsat_mss_imagery_for_temperate_ecosystems.pdf">https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_automated%20cloud_and_cloud_shadow_identification_in_landsat_mss_imagery_for_temperate_ecosystems.pdf</a>)</p>
+or cloud shadow are masked out.
+<a href="https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_automated%20cloud_and_cloud_shadow_identification_in_landsat_mss_imagery_for_temperate_ecosystems.pdf">About MSScvm</a>.</p>
 </dd>
 </dl>
 
@@ -199,8 +199,8 @@ MSScvm].(https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_automated%20cl
 
 ## applyMsscvm(img) ⇒ <code>ee.Image</code>
 Applies the MSScvm mask to the input image, i.e., pixels identified as cloud
-or cloud shadow are masked out. [About
-MSScvm].(https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_automated%20cloud_and_cloud_shadow_identification_in_landsat_mss_imagery_for_temperate_ecosystems.pdf)
+or cloud shadow are masked out.
+[About MSScvm](https://jdbcode.github.io/MSScvm/imgs/braaten_et_al_2015_automated%20cloud_and_cloud_shadow_identification_in_landsat_mss_imagery_for_temperate_ecosystems.pdf).
 
 **Kind**: global function  
 
