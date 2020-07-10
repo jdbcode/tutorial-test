@@ -50,71 +50,105 @@ Images are returned with consistent band names
 ['green', 'red', 'red_edge', 'nir'], and an added property that designates WRS
 grid ['WRS-1', 'WRS-2']; all original bands and metadata are included.
 
-- **filter by intersection with a geometry**.
+- **Filter by intersection with a geometry**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnCol = msslib.getCol({aoi: geometry})
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018])
+});
 ```
 
-- ...filter by geometry intersection, cloud cover, and geometric RMSE.
+- **Filter by geometry intersection, cloud cover, and geometric RMSE**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnCol = msslib.getCol({aoi: geometry})
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  maxCloudCover: 25,
+  maxGeomRmse: 0.25
+});
+```
+
+- **Filter by geometry intersection, year range, and day of year**
+
+```js
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  yearRange: [1975, 1980],
+  doyRange: [170, 240] 
+});
+```
+
+- **Filter by geometry intersection and World Reference System**
+
+```js
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  wrs: '2',  // WRS-2 only
+});
+```
+
+- **Filter by geometry intersection and exclude two images by ID**
+
+```js
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  maxCloudCover: 25,
+  maxGeomRmse: 0.25,
+  excludeIds: ['LM10490291972246AAA04', 'LM10480291973113AAA02']
+});
 ```
 
 ### Transform DN values to radiance
 
-#### Transform a single image.
+- **Transform a single image**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnImg = msslib.getCol({aoi: geometry}).first();
-var mssToaImage = msslib.calcToa(mssDnImg);
+var mssDnImg = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018])
+}).first();
+var mssRadImage = msslib.calcRad(mssDnImg);
 ```
 
-#### Transform a collection.
+- **Transform a collection**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnCol = msslib.getCol({aoi: geometry});
-var mssToaCol = mssDnCol.map(msslib.calcToa);
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018])
+});
+var mssRadCol = mssDnCol.map(msslib.calcRad);
 ```
 
 ### Transform DN values to TOA reflectance
 
-#### Transform a single image.
+- **Transform a single image**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnImg = msslib.getCol({aoi: geometry}).first();
+var mssDnImg = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018])
+}).first();
 var mssToaImage = msslib.calcToa(mssDnImg);
 ```
 
-#### Transform a collection.
+- **Transform a collection**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnCol = msslib.getCol({aoi: geometry});
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018])
+});
 var mssToaCol = mssDnCol.map(msslib.calcToa);
 ```
 
 ### Collection inspection
 
-#### View image thumbnails.
+- **View image thumbnails**
 
 ```js
-var geometry = ee.Geometry.Point([-122.239, 44.018]);
-var mssDnCol = msslib.getCol({aoi: geometry})
-  .filter(ee.Filter.calendarRange(170, 245, 'DAY_OF_YEAR'));
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  doyRange: [170, 245]
+});
 msslib.viewThumbnails(mssDnCol);
 ```
-
-Print a list of images
-
-
-
 
 ## Components
 
