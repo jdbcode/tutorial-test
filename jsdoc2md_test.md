@@ -41,29 +41,23 @@ Import `msslib`; include the following line at the top of every script.
 var msslib = require('users/braaten/mss:msslib.js');
 ```
 
-### Get MSS collection
+### Get MSS image collection
 
 The `msslib.getCol` function assembles an ImageCollection of MSS image from
 satellites 1-5. 1-3 use WRS-1 footprint grid, 4-5 use WRS-2. Apply optional
 filtering criteria to limit the collection by bounds, quality, and WRS grid.
 Images are returned with consistent band names
 ['green', 'red', 'red_edge', 'nir'], and an added property that designates WRS
-grid ['WRS-1', 'WRS-2']; all original bands and metadata are included.  
+grid ['WRS-1', 'WRS-2']; all original bands and metadata are included.
 
-- **Get MSS collection; filter by intersection with a geometry**.
-
-```js
-var mssDnCol = msslib.getCol({aoi: geometry})
-```
-
-#### Get MSS collection; filter by intersection with a geometry.
+- **filter by intersection with a geometry**.
 
 ```js
 var geometry = ee.Geometry.Point([-122.239, 44.018]);
 var mssDnCol = msslib.getCol({aoi: geometry})
 ```
 
-#### Get MSS collection; filter by quality.
+- ...filter by geometry intersection, cloud cover, and geometric RMSE.
 
 ```js
 var geometry = ee.Geometry.Point([-122.239, 44.018]);
