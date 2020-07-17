@@ -155,14 +155,17 @@ msslib.viewThumbnails(mssDnCol);
 #### Constants
 
 <dl>
-<dt><a href="#VIS_DN">VIS_DN</a> : <code>Object</code></dt>
+<dt><a href="#visDn">visDn</a> : <code>Object</code></dt>
 <dd><p>A dictionary of visualization parameters for MSS DN images.</p>
 </dd>
-<dt><a href="#VIS_RAD">VIS_RAD</a> : <code>Object</code></dt>
+<dt><a href="#visRad">visRad</a> : <code>Object</code></dt>
 <dd><p>A dictionary of visualization parameters for MSS radiance images.</p>
 </dd>
-<dt><a href="#VIS_TOA">VIS_TOA</a> : <code>Object</code></dt>
+<dt><a href="#visToa">visToa</a> : <code>Object</code></dt>
 <dd><p>A dictionary of visualization parameters for MSS TOA reflectance images.</p>
+</dd>
+<dt><a href="#visNdvi">visNdvi</a> : <code>Object</code></dt>
+<dd><p>A dictionary of visualization parameters for MSS NDVI images.</p>
 </dd>
 </dl>
 
@@ -178,7 +181,7 @@ year, and day of year. All image bands are named consistently:
 [&#39;green&#39;, &#39;red&#39;, &#39;red_edge&#39;, &#39;nir&#39;, &#39;BQA&#39;]. Adds &#39;wrs&#39; property to all images
 designating them as &#39;WRS-1&#39; or &#39;WRS-2&#39;.</p>
 </dd>
-<dt><a href="#viewThumbnails">viewThumbnails(col)</a></dt>
+<dt><a href="#viewThumbnails">viewThumbnails(col, params)</a></dt>
 <dd><p>Prints image collection thumbnails to the console with accompanying image
 IDs for use in quickly evaluating a collection. The image IDs can be recorded
 and used as entries in the <code>params.excludeIds</code> list of the <code>msslib.getCol()</code>
@@ -216,22 +219,41 @@ or cloud shadow are masked out. <a href="https://jdbcode.github.io/MSScvm/imgs/b
 </dd>
 </dl>
 
-<a name="VIS_DN"></a>
+<a name="visDn"></a>
 
-### VIS\_DN : <code>Object</code>
+### visDn : <code>Object</code>
 A dictionary of visualization parameters for MSS DN images.
 
 **Kind**: global constant  
-<a name="VIS_RAD"></a>
+**Example**  
+```js
+# Load example MSS 5 image.
+var img = msslib.exMss5;
 
-### VIS\_RAD : <code>Object</code>
+# Use with `Map.addLayer()`.
+Map.centerObject(img, 8);
+Map.addLayer(img, msslib.visDn, 'From Map.addLayer()');
+
+# Use with `ee.Image.visualize()`.
+var visImg = img.visualize(msslib.visDn);
+Map.addLayer(visImg, null, 'From ee.Image.visualize()');
+```
+<a name="visRad"></a>
+
+### visRad : <code>Object</code>
 A dictionary of visualization parameters for MSS radiance images.
 
 **Kind**: global constant  
-<a name="VIS_TOA"></a>
+<a name="visToa"></a>
 
-### VIS\_TOA : <code>Object</code>
+### visToa : <code>Object</code>
 A dictionary of visualization parameters for MSS TOA reflectance images.
+
+**Kind**: global constant  
+<a name="visNdvi"></a>
+
+### visNdvi : <code>Object</code>
+A dictionary of visualization parameters for MSS NDVI images.
 
 **Kind**: global constant  
 <a name="getCol"></a>
@@ -252,16 +274,16 @@ designating them as 'WRS-1' or 'WRS-2'.
 | --- | --- | --- | --- |
 | params | <code>Object</code> |  | An object that provides filtering parameters. |
 | [params.aoi] | <code>ee.Geometry</code> | <code></code> | The geometry to filter images by     intersection; those intersecting the geometry are included in the     collection. |
-| [params.rmseVerify] | <code>number</code> | <code>0.5</code> | The maximum geometric RMSE of a     given image allowed in the collection, provided in units of pixels     (60 m), conditioned on the 'GEOMETRIC_RMSE_VERIFY' image property. |
-| [params.cloudCover] | <code>number</code> | <code>50</code> | The maximum cloud cover of a given     image allow in the collection, provided as a percent, conditioned on the     'CLOUD_COVER' image property. |
+| [params.maxGeomRmse] | <code>number</code> | <code>0.5</code> | The maximum geometric RMSE of a     given image allowed in the collection, provided in units of pixels     (60 m), conditioned on the 'GEOMETRIC_RMSE_VERIFY' image property. |
+| [params.maxCloudCover] | <code>number</code> | <code>50</code> | The maximum cloud cover of a given     image allow in the collection, provided as a percent, conditioned on the     'CLOUD_COVER' image property. |
 | [params.wrs] | <code>string</code> | <code>&quot;1&amp;2&quot;</code> | An indicator for what World Reference     System types to allow in the collection. MSS images from Landsat     satellites 1-3 use WRS-1, while 4-5 use WRS-2. Options include: '1'     (WRS-1 only), '2' (WRS-2 only), and '1&2' (both WRS-1 and WRS-2). |
 | [params.yearRange] | <code>Array</code> | <code></code> | An array with two integers that define     the range of years to include in the collection. The first defines the     start year (inclusive) and the second defines the end year (inclusive).     Ex: [1972, 1990]. |
 | [params.doyRange] | <code>Array</code> | <code></code> | An array with two integers that define     the range of days to include in the collection. The first defines the     start day of year (inclusive) and the second defines the end day of year     (inclusive). Note that the start day can be less than the end day, which     indicates that the day range crosses the new year. Ex: [180, 240]     (dates for northern hemisphere summer images), [330, 90] (dates for     southern hemisphere summer images). |
-| [params.excludeIds] | <code>Array</code> | <code></code> | A list of image IDs to filter out of     the image collection, given  as the value of the image's 'system:index'     property. |
+| [params.excludeIds] | <code>Array</code> | <code></code> | A list of image IDs to filter out of     the image collection, given  as the value of the image's     'LANDSAT_SCENE_ID' property. |
 
 <a name="viewThumbnails"></a>
 
-### viewThumbnails(col)
+### viewThumbnails(col, params)
 Prints image collection thumbnails to the console with accompanying image
 IDs for use in quickly evaluating a collection. The image IDs can be recorded
 and used as entries in the `params.excludeIds` list of the `msslib.getCol()`
@@ -269,9 +291,13 @@ function to exclude the given image(s).
 
 **Kind**: global function  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| col | <code>ee.ImageCollection</code> | MSS DN image collection originating from the     `msslib.getCol()` function. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| col | <code>ee.ImageCollection</code> |  | MSS DN image collection originating from the     `msslib.getCol()` function. |
+| params | <code>Object</code> |  | An object that provides visualization parameters. |
+| [params.unit] | <code>string</code> | <code>&quot;toa&quot;</code> | An indicator for what units to use in the     display image. Use: 'dn' (raw digital number), 'rad' (radiance), or     'toa' (TOA reflectance) |
+| [params.display] | <code>string</code> | <code>&quot;&#x27;nir|red|green&#x27;&quot;</code> | An indicator for how to     display the image thumbnail. Use 'nir|red|green' (RGB), 'ndvi'     (grayscale). Default visualization parameters for color stretch are     applied. |
+| [params.visParams] | <code>Object</code> | <code></code> | A custom visualization parameter     dictionary as described [here](https://developers.google.com/earth-engine/image_visualization#mapVisParamTable).     If set, overrides the `params.display` option and default. |
 
 <a name="calcRad"></a>
 
