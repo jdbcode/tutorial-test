@@ -353,7 +353,6 @@ or cloud shadow are masked out. [Learn about MSScvm](https://jdbcode.github.io/M
 | --- | --- | --- |
 | img | <code>ee.Image</code> | MSS TOA image originating from `msslib.getCol()`     and `msslib.calcToa()`. |
 
-
 ## Change log
 
 ### v0.1
