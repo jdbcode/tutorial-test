@@ -21,133 +21,86 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-The aim of msslib is to make it easy to work with Landsat MSS data in Earth
+The aim of `msslib` is to make it easy to work with Landsat MSS data in Earth
 Engine. It assembles image collections across the five satellites that carried
 the MSS sensor, filters images for quality, calculates TOA reflectance, and
 calculates the MSScvm cloud mask.
 
-Landsat MSS
-
-
-
 ## Guide
-
 
 ### Module import
 
-Import `msslib`; include the following line at the top of every script.
+Include the following line at the top of every script to import the library.
 
 ```js
 var msslib = require('users/braaten/mss:msslib.js');
 ```
 
-### Get MSS image collection
+### Example workflow
 
-The `msslib.getCol` function assembles an ImageCollection of MSS image from
-satellites 1-5. 1-3 use WRS-1 footprint grid, 4-5 use WRS-2. Apply optional
-filtering criteria to limit the collection by bounds, quality, and WRS grid.
-Images are returned with consistent band names
-['green', 'red', 'red_edge', 'nir'], and an added property that designates WRS
-grid ['WRS-1', 'WRS-2']; all original bands and metadata are included.
+This example demonstrates how to assemble an MSS image collection, view
+thumbnails to assess quality, reassemble collection to remove bad images,
+transform the images to TOA reflectance, add and NDVI band, and mask cloud and
+cloud shadows.
 
-- **Filter by intersection with a geometry**
+Import the msslib module.
 
 ```js
-var mssDnCol = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018])
-});
+var msslib = require('users/braaten/mss:msslib.js');
 ```
 
-- **Filter by geometry intersection, cloud cover, and geometric RMSE**
+Get an MSS image collection filtered by region and day of year, as well as
+default settings for cloud and RMSE.
 
 ```js
 var mssDnCol = msslib.getCol({
   aoi: ee.Geometry.Point([-122.239, 44.018]),
-  maxCloudCover: 25,
-  maxGeomRmse: 0.25
-});
-```
-
-- **Filter by geometry intersection, year range, and day of year**
-
-```js
-var mssDnCol = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018]),
-  yearRange: [1975, 1980],
   doyRange: [170, 240] 
 });
 ```
 
-- **Filter by geometry intersection and World Reference System**
+View image thumbnails to get a sense for quality.
+
+```js
+msslib.viewThumbnails(mssDnCol);
+```
+
+Retrieve an image collection again, but this time exclude bad images identified
+previously.
 
 ```js
 var mssDnCol = msslib.getCol({
   aoi: ee.Geometry.Point([-122.239, 44.018]),
-  wrs: '2',  // WRS-2 only
+  doyRange: [170, 240],
+  excludeIds: ['LM10480291973203AAA02', 'LM10480301973203AAA02']
 });
 ```
 
-- **Filter by geometry intersection and exclude two images by ID**
+Convert the collection to top of atmosphere reflectance.
 
 ```js
-var mssDnCol = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018]),
-  maxCloudCover: 25,
-  maxGeomRmse: 0.25,
-  excludeIds: ['LM10490291972246AAA04', 'LM10480291973113AAA02']
-});
-```
-
-### Transform DN values to radiance
-
-- **Transform a single image**
-
-```js
-var mssDnImg = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018])
-}).first();
-var mssRadImage = msslib.calcRad(mssDnImg);
-```
-
-- **Transform a collection**
-
-```js
-var mssDnCol = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018])
-});
-var mssRadCol = mssDnCol.map(msslib.calcRad);
-```
-
-### Transform DN values to TOA reflectance
-
-- **Transform a single image**
-
-```js
-var mssDnImg = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018])
-}).first();
-var mssToaImage = msslib.calcToa(mssDnImg);
-```
-
-- **Transform a collection**
-
-```js
-var mssDnCol = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018])
-});
 var mssToaCol = mssDnCol.map(msslib.calcToa);
 ```
 
-### Collection inspection
-
-- **View image thumbnails**
+Add the NDVI transformation as a band to all images in the collection.
 
 ```js
-var mssDnCol = msslib.getCol({
-  aoi: ee.Geometry.Point([-122.239, 44.018]),
-  doyRange: [170, 245]
-});
-msslib.viewThumbnails(mssDnCol);
+mssToaCol = mssToaCol.map(msslib.addNdvi);
+```
+
+Apply the MSS clear-view-mask to all images in the collection.
+
+```js
+mssToaCol = mssToaCol.map(msslib.applyMsscvm);
+
+```
+
+Apply QA band to all images in the collection.
+
+
+```js
+mssToaCol = mssToaCol.map(msslib.applyQaMask);
+
 ```
 
 ## Components
@@ -227,14 +180,14 @@ A dictionary of visualization parameters for MSS DN images.
 **Kind**: global constant  
 **Example**  
 ```js
-# Load example MSS 5 image.
+// Load example MSS 5 image.
 var img = msslib.exMss5;
 
-# Use with `Map.addLayer()`.
+// Use with Map.addLayer().
 Map.centerObject(img, 8);
 Map.addLayer(img, msslib.visDn, 'From Map.addLayer()');
 
-# Use with `ee.Image.visualize()`.
+// Use with ee.Image.visualize().
 var visImg = img.visualize(msslib.visDn);
 Map.addLayer(visImg, null, 'From ee.Image.visualize()');
 ```
@@ -244,18 +197,57 @@ Map.addLayer(visImg, null, 'From ee.Image.visualize()');
 A dictionary of visualization parameters for MSS radiance images.
 
 **Kind**: global constant  
+**Example**  
+```js
+// Load example MSS 5 image.
+var img = msslib.exMss5;
+
+// Use with Map.addLayer().
+Map.centerObject(img, 8);
+Map.addLayer(img, msslib.visRad, From Map.addLayer());
+
+// Use with `ee.Image.visualize()`.
+var visImg = img.visualize(msslib.visRad);
+Map.addLayer(visImg, null, 'From ee.Image.visualize()');
+```
 <a name="visToa"></a>
 
 ### visToa : <code>Object</code>
 A dictionary of visualization parameters for MSS TOA reflectance images.
 
 **Kind**: global constant  
+**Example**  
+```js
+// Load example MSS 5 image.
+var img = msslib.exMss5;
+
+// Use with Map.addLayer().
+Map.centerObject(img, 8);
+Map.addLayer(img, msslib.visToa, From Map.addLayer());
+
+// Use with `ee.Image.visualize()`.
+var visImg = img.visualize(msslib.visToa);
+Map.addLayer(visImg, null, 'From ee.Image.visualize()');
+```
 <a name="visNdvi"></a>
 
 ### visNdvi : <code>Object</code>
 A dictionary of visualization parameters for MSS NDVI images.
 
 **Kind**: global constant  
+**Example**  
+```js
+// Load example MSS 5 image.
+var img = msslib.exMss5;
+
+// Use with Map.addLayer().
+Map.centerObject(img, 8);
+Map.addLayer(img, msslib.visNdvi, From Map.addLayer());
+
+// Use with `ee.Image.visualize()`.
+var visImg = img.visualize(msslib.visNdvi);
+Map.addLayer(visImg, null, 'From ee.Image.visualize()');
+```
 <a name="getCol"></a>
 
 ### getCol(params) ⇒ <code>ee.ImageCollection</code>
@@ -281,6 +273,28 @@ designating them as 'WRS-1' or 'WRS-2'.
 | [params.doyRange] | <code>Array</code> | <code></code> | An array with two integers that define     the range of days to include in the collection. The first defines the     start day of year (inclusive) and the second defines the end day of year     (inclusive). Note that the start day can be less than the end day, which     indicates that the day range crosses the new year. Ex: [180, 240]     (dates for northern hemisphere summer images), [330, 90] (dates for     southern hemisphere summer images). |
 | [params.excludeIds] | <code>Array</code> | <code></code> | A list of image IDs to filter out of     the image collection, given  as the value of the image's     'LANDSAT_SCENE_ID' property. |
 
+**Example**  
+```js
+// Filter by geometry intersection, cloud cover, and geometric RMSE.
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  maxCloudCover: 25,
+  maxGeomRmse: 0.25
+});
+
+// Filter by geometry intersection, year range, and day of year.
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  yearRange: [1975, 1980],
+  doyRange: [170, 240] 
+});
+
+// Filter by geometry intersection and exclude two images by ID.
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  excludeIds: ['LM10490291972246AAA04', 'LM10480291973113AAA02']
+});
+```
 <a name="viewThumbnails"></a>
 
 ### viewThumbnails(col, params)
@@ -299,6 +313,20 @@ function to exclude the given image(s).
 | [params.display] | <code>string</code> | <code>&quot;&#x27;nir|red|green&#x27;&quot;</code> | An indicator for how to     display the image thumbnail. Use 'nir|red|green' (RGB), 'ndvi'     (grayscale). Default visualization parameters for color stretch are     applied. |
 | [params.visParams] | <code>Object</code> | <code></code> | A custom visualization parameter     dictionary as described [here](https://developers.google.com/earth-engine/image_visualization#mapVisParamTable).     If set, overrides the `params.display` option and default. |
 
+**Example**  
+```js
+// Get an MSS image collection.
+var mssDnCol = msslib.getCol({
+  aoi: ee.Geometry.Point([-122.239, 44.018]),
+  doyRange: [170, 240] 
+});
+
+// View DN image thumbnails in the console.
+viewThumbnails(mssDnCol, {unit: 'dn'});
+
+// View TOA image thumbnails in the console.
+viewThumbnails(mssDnCol, {unit: 'toa'});
+```
 <a name="calcRad"></a>
 
 ### calcRad(img) ⇒ <code>ee.Image</code>
